@@ -1,5 +1,5 @@
-import { put, all, call, takeLatest } from "redux-saga/effects";
-import Ajax from "../ajax";
+import { put, call, takeLatest } from "redux-saga/effects";
+import Ajax from "../utils/ajax";
 import { API_ACTION, SAGA_ACTION } from "../actions";
 
 function* createData(action: any) {
@@ -42,22 +42,9 @@ function* fetchData(action: any) {
   yield put({ type: API_ACTION.SEARCH, data: data });
 }
 
-function* watchCreate() {
-  yield takeLatest(SAGA_ACTION.CREATE, createData);
-}
-
-function* watchUpdate() {
-  yield takeLatest(SAGA_ACTION.UPDATE, updateData);
-}
-
-function* watchDelete() {
-  yield takeLatest(SAGA_ACTION.DELETE, deleteData);
-}
-
-function* watchSearch() {
-  yield takeLatest(SAGA_ACTION.SEARCH, fetchData);
-}
-
 export default function* rootSaga() {
-  yield all([watchCreate(), watchUpdate(), watchDelete(), watchSearch()]);
+  yield takeLatest(SAGA_ACTION.SEARCH, fetchData);
+  yield takeLatest(SAGA_ACTION.CREATE, createData);
+  yield takeLatest(SAGA_ACTION.UPDATE, updateData);
+  yield takeLatest(SAGA_ACTION.DELETE, deleteData);
 }

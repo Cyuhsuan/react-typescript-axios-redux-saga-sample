@@ -5,12 +5,6 @@ export enum API_ACTION {
   SEARCH = "SEARCH",
 }
 
-export enum COUNTER_ACTION {
-  DECREASE = "decrease",
-  INCREASE = "increase",
-  RESET = "reset",
-}
-
 export enum SAGA_ACTION {
   CREATE = "WATCH_CREATE",
   UPDATE = "WATCH_UPDATE",
