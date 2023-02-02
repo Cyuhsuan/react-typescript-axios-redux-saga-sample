@@ -25,13 +25,17 @@ export const auth = (
     action: IAuthAction
 ) => {
     switch (action.type) {
+        // 登入成功就寫入使用者token 跟 資料
         case AUTH_STATE.LOGIN_SUCCESS:
+            localStorage.setItem('store', JSON.stringify(action.payload))
             return (state = action.payload);
+        // 登入失敗 或者 登出 就清除使用者token 跟 資料
         case AUTH_STATE.LOGOUT_SUCCESS:
         case AUTH_STATE.LOGOUT_FAIL:
         case AUTH_STATE.LOGIN_FAIL:
+            localStorage.removeItem('store');
             return (state = initState);
         default:
-            return state;
+            return JSON.parse(localStorage.getItem('store') ?? JSON.stringify(initState));
     }
 };
