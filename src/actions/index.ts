@@ -11,3 +11,8 @@ export enum SAGA_ACTION {
   DELETE = "WATCH_DELETE",
   SEARCH = "WATCH_SEARCH",
 }
+
+export interface IAction {
+  type: string;
+  payload: any;
+}
