@@ -3,7 +3,6 @@ import FormInput from "./formInput/FormInput";
 import { useTranslation } from "react-i18next";
 
 export default function LoginForm() {
-    const { register } = useFormContext();
     const { t } = useTranslation();
     return (
         <div className=''>

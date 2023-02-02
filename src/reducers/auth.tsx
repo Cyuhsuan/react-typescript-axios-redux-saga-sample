@@ -1,12 +1,10 @@
 import { IAction } from "../actions";
 
-type TAuth = {
-    id: number | null,
+export type TAuth = {
     token: string | null
 }
 
 const initAuth: TAuth = {
-    id: null,
     token: null
 }
 
@@ -15,7 +13,7 @@ export enum AUTH_ACTION {
     LOGOUT = "logout",
 }
 
-interface IAuthAction extends IAction {
+export interface IAuthAction extends IAction {
     type: AUTH_ACTION;
     payload: TAuth
 }

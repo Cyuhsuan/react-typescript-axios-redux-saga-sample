@@ -1,38 +1,39 @@
 import axios, { AxiosRequestConfig } from "axios";
+export const interceptor = (store: any) => {
+  // http request 請求攔截器，有token值則配置上token值
+  axios.interceptors.request.use(
+    (config: AxiosRequestConfig) => {
+      const state = store.getState();
+      if (state.auth && state.auth.token && config.headers) {
+        config.headers.Authorization = `Bearer ${state.auth.token}`;
+      }
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
+};
+interface IAjax {
+  get(url: string, data?: object): Promise<any>;
+  post(url: string, data: object): Promise<any>;
+  put(url: string, data: object): Promise<any>;
+  delete(url: string, id: number): Promise<any>;
+}
 
-const service = axios.create({
-  baseURL: `${process.env.VUE_APP_URL}:${process.env.VUE_APP_PORT}/api`,
-  headers: {
-    "Content-type": "application/json",
-  },
-});
-
-// http request 請求攔截器，有token值則配置上token值
-service.interceptors.request.use(
-  (config: AxiosRequestConfig) => {
-    // if (store.state.token && config.headers) {
-    //   config.headers.Authorization = `Bearer ${store.state.token}`;
-    // }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
-
-class Ajax {
+class AjaxService implements IAjax {
   get(url: string, data: object | null = null) {
-    return service.get(url, { params: data }).catch((e) => {});
+    return axios.get(url, { params: data });
   }
   post(url: string, data: object) {
-    return service.post(url, data).catch((e) => {});
+    return axios.post(url, data);
   }
   put(url: string, data: object) {
-    return service.put(url, data).catch((e) => {});
+    return axios.put(url, data);
   }
-
-  delete(url: string, id: string) {
-    return service.delete(`${url}/${id}`);
+  delete(url: string, id: number) {
+    return axios.delete(`${url}/${id}`);
   }
 }
-export default new Ajax();
+
+export default new AjaxService();
