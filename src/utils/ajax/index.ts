@@ -15,25 +15,32 @@ export const interceptor = (store: any) => {
   );
 };
 interface IAjax {
-  get(url: string, data?: object): Promise<any>;
-  post(url: string, data: object): Promise<any>;
-  put(url: string, data: object): Promise<any>;
-  delete(url: string, id: number): Promise<any>;
+  get(route: string, data?: object): Promise<any>;
+  post(route: string, data: object): Promise<any>;
+  put(route: string, data: object): Promise<any>;
+  delete(route: string, id: number): Promise<any>;
 }
 
-class AjaxService implements IAjax {
-  get(url: string, data: object | null = null) {
-    return axios.get(url, { params: data });
+class Ajax implements IAjax {
+  private url: string = "";
+  constructor() {
+    // 建立基本路由
+    const baseUrl = process.env.REACT_APP_URL;
+    this.url = `${baseUrl}/api`;
   }
-  post(url: string, data: object) {
-    return axios.post(url, data);
+
+  public get(route: string, data: object | null = null) {
+    return axios.get(`${this.url}${route}`, { params: data });
   }
-  put(url: string, data: object) {
-    return axios.put(url, data);
+  public post(route: string, data: object) {
+    return axios.post(`${this.url}${route}`, data);
   }
-  delete(url: string, id: number) {
-    return axios.delete(`${url}/${id}`);
+  public put(route: string, data: object) {
+    return axios.put(`${this.url}${route}`, data);
+  }
+  public delete(route: string) {
+    return axios.delete(`${this.url}${route}`);
   }
 }
 
-export default new AjaxService();
+export default new Ajax();

@@ -1,45 +1,42 @@
 import { put, takeLatest, call } from "redux-saga/effects";
-import { IAuthAction, AUTH_ACTION, TAuth } from "../reducers/auth";
-import AjaxService from "../utils/ajax";
+import { AUTH_STATE } from "../reducers/auth";
+import { IAction } from "../actions";
 import { ILoginForm } from "../views/LoginPage";
+import AuthService, {
+  TAuth,
+  TAccountInfo,
+} from "../utils/ajax/api/authService";
 
-export enum AUTH_DO {
-  LOGIN = "do_login",
-  LOGOUT = "do_logout",
+export enum AUTH_ACTION {
+  LOGIN = "login",
+  LOGOUT = "logout",
 }
 
-export enum AUTH_ROUTE {
-  LOGIN = "/api/login",
-  LOGOUT = "/logout",
+interface IAuthAction extends IAction {
+  type: AUTH_ACTION;
+  payload: ILoginForm;
 }
+
 /**
  * 進行登入
  * @param {IAuthAction} action
  */
-function* login(action: { type: string; payload: ILoginForm }) {
-  const token: string = yield call(async () => {
-    return await AjaxService.post(
-      `${process.env.REACT_APP_URL}${AUTH_ROUTE.LOGIN}`,
-      action.payload
-    ).then((res) => {
-      return res.data.token;
-    });
-  });
-  yield put({ type: AUTH_ACTION.LOGIN, payload: { token: token } });
+function* login(action: IAuthAction) {
+  const res: TAuth & TAccountInfo = yield call(() =>
+    AuthService.login(action.payload)
+  );
+  yield put({ type: AUTH_STATE.LOGIN_SUCCESS, payload: res });
 }
 
 /**
  * 進行登出
- * @param {IAuthAction} action
  */
-function* logout(action: IAuthAction) {
-  const data: void = yield call(async () => {
-    return await AjaxService.post(AUTH_ROUTE.LOGIN, action.payload);
-  });
-  yield put({ type: AUTH_ACTION.LOGOUT, payload: data });
+function* logout() {
+  yield call(() => AuthService.logout());
+  yield put({ type: AUTH_STATE.LOGOUT_SUCCESS });
 }
 
 export default function* authFlow() {
-  yield takeLatest(AUTH_DO.LOGIN, login);
-  yield takeLatest(AUTH_DO.LOGOUT, logout);
+  yield takeLatest(AUTH_ACTION.LOGIN, login);
+  yield takeLatest(AUTH_ACTION.LOGOUT, logout);
 }
