@@ -5,9 +5,9 @@ export default function LoginForm() {
     const { t } = useTranslation();
     return (
         <div className='w-2/5'>
-            <p className=''>{t('account')}</p>
+            <label htmlFor="account" className=''>{t('account')}</label>
             <FormInput name='account' require={true} />
-            <p className=''>{t('password')}</p>
+            <label htmlFor="password" className=''>{t('password')}</label>
             <FormInput name='password' require={true} />
         </div>
     )
