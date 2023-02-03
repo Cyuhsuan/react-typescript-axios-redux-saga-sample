@@ -1,12 +1,11 @@
 import axios, { AxiosRequestConfig } from "axios";
-export const interceptor = (store: any) => {
+import { TAuth } from "../../utils/ajax/api/authService";
+export const interceptor = (auth: TAuth) => {
   // http request 請求攔截器，有token值則配置上token值
   axios.interceptors.request.use(
     (config: AxiosRequestConfig) => {
-      const state = store.getState();
-      if (state.auth && state.auth.token && config.headers) {
-        config.headers.Authorization = `Bearer ${state.auth.token}`;
-      }
+      if (auth.token && config.headers)
+        config.headers.Authorization = `Bearer ${auth.token}`;
       return config;
     },
     (error) => {
@@ -26,7 +25,7 @@ axios.interceptors.response.use(
 );
 export interface IAjax {
   get(route: string, data?: object): Promise<any>;
-  post(route: string, data: object): Promise<any>;
+  post(route: string, data?: object): Promise<any>;
   put(route: string, data: object): Promise<any>;
   delete(route: string, id: number): Promise<any>;
 }
@@ -42,7 +41,7 @@ class Ajax implements IAjax {
   public get(route: string, data: object | null = null) {
     return axios.get(`${this.url}${route}`, { params: data });
   }
-  public post(route: string, data: object) {
+  public post(route: string, data: object = {}) {
     return axios.post(`${this.url}${route}`, data);
   }
   public put(route: string, data: object) {

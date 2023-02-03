@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import store from "./store";
 import { interceptor } from "./utils/ajax";
 function App() {
-  interceptor(store);
+  interceptor(store.getState().auth);
   const Router = () => { return useRoutes(Routes) }
   return (
     <div>

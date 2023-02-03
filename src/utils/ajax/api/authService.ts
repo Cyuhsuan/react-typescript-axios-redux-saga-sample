@@ -34,7 +34,7 @@ class AuthService implements IAuthService {
 
   /**登出 */
   public async logout() {
-    await this.service.post(AUTH_ROUTE.LOGOUT, {});
+    await this.service.post(AUTH_ROUTE.LOGOUT);
   }
 }
 export default new AuthService(Ajax);

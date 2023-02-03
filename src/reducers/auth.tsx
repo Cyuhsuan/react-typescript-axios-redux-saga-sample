@@ -21,9 +21,9 @@ interface IAuthAction extends IAction {
 }
 
 export const auth = (
-    state: TAuth = initState,
+    state: TAuth & TAccountInfo = initState,
     action: IAuthAction
-) => {
+): TAuth & TAccountInfo => {
     switch (action.type) {
         // 登入成功就寫入使用者token 跟 資料
         case AUTH_STATE.LOGIN_SUCCESS:

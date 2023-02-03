@@ -17,10 +17,7 @@ interface IAuthAction extends IAction {
   payload: ILoginForm;
 }
 
-/**
- * 進行登入
- * @param {IAuthAction} action
- */
+/**進行登入 */
 function* login(action: IAuthAction) {
   const res: TAuth & TAccountInfo = yield call(() =>
     AuthService.login(action.payload)
@@ -28,9 +25,7 @@ function* login(action: IAuthAction) {
   yield put({ type: AUTH_STATE.LOGIN_SUCCESS, payload: res });
 }
 
-/**
- * 進行登出
- */
+/**進行登出 */
 function* logout() {
   yield call(() => AuthService.logout());
   yield put({ type: AUTH_STATE.LOGOUT_SUCCESS });
