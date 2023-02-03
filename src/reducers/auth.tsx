@@ -15,7 +15,7 @@ export enum AUTH_STATE {
     LOGOUT_FAIL = "logout_fail",
 }
 
-export interface IAuthAction extends IAction {
+interface IAuthAction extends IAction {
     type: AUTH_STATE;
     payload: TAuth & TAccountInfo
 }
