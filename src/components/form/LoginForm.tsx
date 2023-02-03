@@ -1,11 +1,10 @@
-import { useFormContext } from "react-hook-form";
 import FormInput from "./formInput/FormInput";
 import { useTranslation } from "react-i18next";
 
 export default function LoginForm() {
     const { t } = useTranslation();
     return (
-        <div className=''>
+        <div className='w-2/5'>
             <p className=''>{t('account')}</p>
             <FormInput name='account' require={true} />
             <p className=''>{t('password')}</p>

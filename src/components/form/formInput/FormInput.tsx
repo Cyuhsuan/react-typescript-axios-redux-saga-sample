@@ -18,10 +18,10 @@ export default function FormInput(props: IFormInput) {
     props = { ...initInput, ...props }
     return (
         <>
-            <div className='pb-5 relative inline-block' >
+            <div className='pb-5 relative' >
                 <input
                     type={props.type}
-                    className='border-solid border-blue-400 border-2 rounded-lg'
+                    className='w-full border-solid border-blue-400 border-2 rounded-lg pl-2'
                     {...register(props.name, { required: props.require })}
                 />
                 {errors[props.name] && <p className="absolute text-red-500 bottom-0 left-2 text-xs">{t('inputRequire')}</p>}

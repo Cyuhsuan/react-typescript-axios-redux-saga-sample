@@ -4,7 +4,7 @@ import AuthProtected from "./authProtected";
 interface RouteObject {
   children?: RouteObject[];
   element: React.ReactNode;
-  path?: string;
+  path: string;
 }
 const routes: RouteObject[] = [
   {
