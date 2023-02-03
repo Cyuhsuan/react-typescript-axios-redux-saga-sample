@@ -1,4 +1,4 @@
-import Ajax from "../index";
+import Ajax, { IAjax } from "../index";
 import { ILoginForm } from "../../../views/LoginPage";
 
 interface IAuthService {
@@ -22,18 +22,19 @@ export type TAccountInfo = {
 };
 
 class AuthService implements IAuthService {
+  constructor(private service: IAjax) {}
+
+  /**登入 */
   public async login(param: ILoginForm) {
-    const res: TAuth & TAccountInfo = await Ajax.post(
-      AUTH_ROUTE.LOGIN,
-      param
-    ).then((res) => {
-      return res.data;
-    });
+    const res: TAuth & TAccountInfo = await this.service
+      .post(AUTH_ROUTE.LOGIN, param)
+      .then((res: TAuth & TAccountInfo) => res);
     return res;
   }
 
+  /**登出 */
   public async logout() {
-    await Ajax.post(AUTH_ROUTE.LOGOUT, {});
+    await this.service.post(AUTH_ROUTE.LOGOUT, {});
   }
 }
-export default new AuthService();
+export default new AuthService(Ajax);

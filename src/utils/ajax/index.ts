@@ -14,7 +14,17 @@ export const interceptor = (store: any) => {
     }
   );
 };
-interface IAjax {
+
+// http response 伺服器響應攔截器
+axios.interceptors.response.use(
+  (response) => {
+    return response.data;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+export interface IAjax {
   get(route: string, data?: object): Promise<any>;
   post(route: string, data: object): Promise<any>;
   put(route: string, data: object): Promise<any>;
